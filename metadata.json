@@ -1,0 +1,8 @@
+{
+  "name": "Nexus Chat: Real-time Smart Portal",
+  "description": "A high-end real-time chat application with cross-tab synchronization and integrated Gemini Live voice assistance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
