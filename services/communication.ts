@@ -1,5 +1,5 @@
 
-import { Message } from '../types';
+import { Message } from '../types.ts';
 
 export class ChatService {
   private channel: BroadcastChannel | null = null;

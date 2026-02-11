@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import ChatInterface from './components/ChatInterface';
-import { User } from './types';
-import { USER_COLORS } from './constants';
+import ChatInterface from './components/ChatInterface.tsx';
+import { User } from './types.ts';
+import { USER_COLORS } from './constants.tsx';
 
 const App: React.FC = () => {
   const [room, setRoom] = useState<string>('');
@@ -40,14 +40,14 @@ const App: React.FC = () => {
 
   if (!user || !room) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+      <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
         <div className="max-w-md w-full glass p-8 rounded-3xl shadow-2xl border border-white/5 space-y-8">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-6 shadow-xl shadow-indigo-500/20">
               <span className="text-4xl">🚀</span>
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">Nexus Chat</h1>
-            <p className="mt-2 text-slate-400">Join a room and start chatting in real-time across the world (or just tabs).</p>
+            <p className="mt-2 text-slate-400">Join a room and start chatting in real-time across the world.</p>
           </div>
 
           <form onSubmit={handleJoin} className="space-y-4">
@@ -92,7 +92,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="bg-slate-950 min-h-screen w-full overflow-hidden">
       <ChatInterface room={room} user={user} />
     </div>
   );

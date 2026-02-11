@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ICONS } from '../constants';
-import { initGeminiLive, createPcmBlob, decode, decodeAudioData } from '../services/gemini';
+import { ICONS } from '../constants.tsx';
+import { initGeminiLive, createPcmBlob, decode, decodeAudioData } from '../services/gemini.ts';
 
 interface VoiceAssistantProps {
   onAITranscription: (text: string) => void;
@@ -9,7 +9,6 @@ interface VoiceAssistantProps {
 
 const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onAITranscription }) => {
   const [isActive, setIsActive] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   
   const sessionRef = useRef<any>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -45,26 +44,22 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onAITranscription }) =>
           sourcesRef.current.add(source);
         },
         onInterrupted: () => {
-          sourcesRef.current.forEach(s => s.stop());
+          sourcesRef.current.forEach(s => {
+            try { s.stop(); } catch(e) {}
+          });
           sourcesRef.current.clear();
           nextStartTimeRef.current = 0;
-        },
-        onTranscription: (text, type) => {
-          if (type === 'output') {
-             // We could accumulate and post to chat if we wanted
-          }
         }
       });
 
       sessionRef.current = await sessionPromise;
       setIsActive(true);
-      setIsListening(true);
 
-      // Microhpone streaming
       const source = inputContextRef.current.createMediaStreamSource(stream);
       const processor = inputContextRef.current.createScriptProcessor(4096, 1, 1);
       
       processor.onaudioprocess = (e) => {
+        if (!isActive) return;
         const inputData = e.inputBuffer.getChannelData(0);
         const pcmBlob = createPcmBlob(inputData);
         sessionRef.current.sendRealtimeInput({ media: pcmBlob });
@@ -80,11 +75,11 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onAITranscription }) =>
   };
 
   const stopSession = () => {
+    setIsActive(false);
     if (sessionRef.current) {
-      // In a real app we might close the session
-      setIsActive(false);
-      setIsListening(false);
-      sourcesRef.current.forEach(s => s.stop());
+      sourcesRef.current.forEach(s => {
+        try { s.stop(); } catch(e) {}
+      });
       sourcesRef.current.clear();
     }
   };

@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Message, User } from '../types';
-import { ICONS, USER_COLORS } from '../constants';
-import { ChatService } from '../services/communication';
-import VoiceAssistant from './VoiceAssistant';
+import { Message, User } from '../types.ts';
+import { ICONS, USER_COLORS } from '../constants.tsx';
+import { ChatService } from '../services/communication.ts';
+import VoiceAssistant from './VoiceAssistant.tsx';
 
 const ChatInterface: React.FC<{ room: string; user: User }> = ({ room, user }) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -59,7 +59,7 @@ const ChatInterface: React.FC<{ room: string; user: User }> = ({ room, user }) =
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-6xl mx-auto glass shadow-2xl overflow-hidden border-x border-slate-700/50">
+    <div className="flex flex-col h-screen w-full max-w-6xl mx-auto glass shadow-2xl overflow-hidden md:border-x border-slate-700/50">
       {/* Header */}
       <header className="px-6 py-4 border-b border-slate-700/50 flex items-center justify-between bg-slate-900/50">
         <div className="flex items-center gap-3">
@@ -85,7 +85,7 @@ const ChatInterface: React.FC<{ room: string; user: User }> = ({ room, user }) =
       {/* Message Area */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-6 space-y-4 bg-[radial-gradient(circle_at_top_right,rgba(30,41,59,0.3),transparent)]"
+        className="flex-1 overflow-y-auto p-6 space-y-4 bg-[radial-gradient(circle_at_top_right,rgba(30,41,59,0.1),transparent)]"
       >
         {messages.map((msg) => {
           const isMe = msg.senderId === user.id;
@@ -93,7 +93,7 @@ const ChatInterface: React.FC<{ room: string; user: User }> = ({ room, user }) =
           
           if (isSystem) {
             return (
-              <div key={msg.id} className="flex justify-center">
+              <div key={msg.id} className="flex justify-center my-4">
                 <span className="px-3 py-1 bg-slate-800/50 rounded-full text-[10px] uppercase tracking-wider font-semibold text-slate-400 border border-slate-700/30">
                   {msg.text}
                 </span>
@@ -104,7 +104,7 @@ const ChatInterface: React.FC<{ room: string; user: User }> = ({ room, user }) =
           return (
             <div 
               key={msg.id} 
-              className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-[80%] ${isMe ? 'ml-auto' : ''}`}
+              className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-[85%] ${isMe ? 'ml-auto' : ''}`}
             >
               <div className="flex items-center gap-2 mb-1 px-1">
                  {!isMe && <span className="text-xs font-semibold text-indigo-400">{msg.senderName}</span>}
@@ -131,7 +131,7 @@ const ChatInterface: React.FC<{ room: string; user: User }> = ({ room, user }) =
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 bg-transparent border-none focus:ring-0 text-sm px-3 text-slate-100"
+            className="flex-1 bg-transparent border-none focus:ring-0 text-sm px-3 text-slate-100 outline-none"
           />
           <button 
             onClick={handleSend}
